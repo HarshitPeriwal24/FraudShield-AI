@@ -1,0 +1,182 @@
+{
+    "project": {
+        "name": "FraudShield AI",
+        "version": "1.0.0",
+        "description": "AI for Digital Public Safety - Defeating Counterfeiting, Fraud & Digital Arrest Scams",
+        "author": "FraudShield AI Team",
+        "year": 2026
+    },
+    "model": {
+        "binary_classifier": {
+            "algorithm": "Gradient Boosting",
+            "n_estimators": 150,
+            "learning_rate": 0.05,
+            "max_depth": 5,
+            "random_state": 42
+        },
+        "multiclass_classifier": {
+            "algorithm": "Gradient Boosting",
+            "n_estimators": 100,
+            "learning_rate": 0.1,
+            "max_depth": 4,
+            "random_state": 42
+        },
+        "vectorizer": {
+            "type": "TF-IDF",
+            "max_features": 5000,
+            "ngram_range": [1, 2],
+            "min_df": 2,
+            "max_df": 0.9,
+            "lowercase": true,
+            "stop_words": "english"
+        },
+        "multiclass_vectorizer": {
+            "type": "TF-IDF",
+            "max_features": 3000,
+            "ngram_range": [1, 2],
+            "min_df": 1,
+            "max_df": 0.95,
+            "lowercase": true,
+            "stop_words": "english"
+        }
+    },
+    "risk_thresholds": {
+        "low": 0.4,
+        "medium": 0.6,
+        "high": 0.8,
+        "critical": 1.0
+    },
+    "risk_levels": {
+        "LOW": "Likely legitimate, no action needed",
+        "MEDIUM": "Requires investigation, flag for review",
+        "HIGH": "Probable scam, alert user/agency",
+        "CRITICAL": "Definite scam, immediate response"
+    },
+    "scam_types": {
+        "digital_arrest_general": {
+            "name": "Digital Arrest General",
+            "description": "Threats of digital/physical arrest",
+            "priority": 1,
+            "response_protocol": "IMMEDIATE_ALERT"
+        },
+        "tax_legal_threat": {
+            "name": "Tax & Legal Threats",
+            "description": "Income tax, warrant, legal action claims",
+            "priority": 1,
+            "response_protocol": "IMMEDIATE_ALERT"
+        },
+        "bank_account_freeze": {
+            "name": "Bank Account Freeze",
+            "description": "Account suspension threats",
+            "priority": 2,
+            "response_protocol": "ALERT_BANK"
+        },
+        "courier_parcel_scam": {
+            "name": "Courier & Parcel",
+            "description": "Fake shipment/customs issues",
+            "priority": 2,
+            "response_protocol": "INVESTIGATION_REQUIRED"
+        }
+    },
+    "api": {
+        "server": {
+            "host": "0.0.0.0",
+            "port": 5000,
+            "debug": false,
+            "threaded": true
+        },
+        "validation": {
+            "max_message_length": 10000,
+            "min_message_length": 10,
+            "max_batch_size": 1000,
+            "allowed_channels": ["sms", "email", "whatsapp", "call_transcript", "unknown"]
+        },
+        "timeout": {
+            "inference_timeout_ms": 5000,
+            "batch_timeout_ms": 30000,
+            "request_timeout_ms": 60000
+        },
+        "rate_limiting": {
+            "enabled": true,
+            "requests_per_minute": 1000,
+            "requests_per_hour": 50000,
+            "burst_size": 50
+        }
+    },
+    "logging": {
+        "level": "INFO",
+        "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        "file": "logs/fraudshield.log",
+        "max_file_size_mb": 100,
+        "backup_count": 10,
+        "console_output": true
+    },
+    "database": {
+        "type": "sqlite",
+        "sqlite_path": "data/fraudshield.db",
+        "postgresql": {
+            "host": "localhost",
+            "port": 5432,
+            "database": "fraudshield",
+            "user": "fraudshield_user"
+        }
+    },
+    "cache": {
+        "enabled": true,
+        "backend": "redis",
+        "redis_host": "localhost",
+        "redis_port": 6379,
+        "redis_db": 0,
+        "ttl_seconds": 3600
+    },
+    "models_path": {
+        "binary_model": "models/binary_model.pkl",
+        "multiclass_model": "models/multiclass_model.pkl",
+        "vectorizer": "models/vectorizer.pkl"
+    },
+    "data": {
+        "training_dataset": "digital_arrest_scam_dataset.csv",
+        "test_size": 0.2,
+        "train_size": 0.8,
+        "random_state": 42,
+        "stratify": true
+    },
+    "performance": {
+        "expected_accuracy_binary": 0.92,
+        "expected_accuracy_multiclass": 0.85,
+        "expected_latency_ms": 85,
+        "acceptable_false_positive_rate": 0.15,
+        "acceptable_false_negative_rate": 0.12
+    },
+    "monitoring": {
+        "enabled": true,
+        "metrics_collection": true,
+        "performance_tracking": true,
+        "error_tracking": true,
+        "audit_logging": true
+    },
+    "alerts": {
+        "enabled": true,
+        "critical_alert_recipients": ["police@ncbi.gov.in", "alert@fraudshield.ai"],
+        "high_alert_threshold": 0.8,
+        "critical_alert_threshold": 0.95,
+        "batch_alerts": true,
+        "alert_frequency_minutes": 60
+    },
+    "features": {
+        "binary_detection": true,
+        "multiclass_detection": true,
+        "batch_processing": true,
+        "model_retraining": true,
+        "api_documentation": true,
+        "web_dashboard": false,
+        "mobile_app": false
+    },
+    "deployment": {
+        "environment": "development",
+        "docker_support": true,
+        "kubernetes_support": true,
+        "cloud_ready": true,
+        "auto_scaling": false
+    }
+}
